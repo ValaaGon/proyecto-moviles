@@ -43,7 +43,15 @@ class _PrincipalState extends State<Principal> {
               margin: EdgeInsets.all(8.0),
               //boton filtro
               child: DropdownButton<String>(
+                style: TextStyle(color: Colors.black),
+                underline: Container(
+                  height: 2,
+                  color: Color(0xFF20d7c8),
+                ),
+                icon: Icon(Icons.arrow_drop_down, color: Color(0xFF40215e)),
                 value: estadoFiltro,
+                dropdownColor: Color(0xFF20d7c8),
+
                 onChanged: (String? newValue) {
                   setState(() {
                     estadoFiltro = newValue!;

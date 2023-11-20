@@ -14,9 +14,11 @@ class TarjetasAdmin extends StatefulWidget {
 }
 
 class _TarjetasAdminState extends State<TarjetasAdmin> {
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: scaffoldKey,
       padding: const EdgeInsets.all(15.0),
       child: Container(
         height: 200.0,
@@ -47,7 +49,7 @@ class _TarjetasAdminState extends State<TarjetasAdmin> {
                   fit: BoxFit.cover,
                 ),
               ),
-              // Boton
+              // Boton editar
               Row(
                 children: [
                   IconButton(
@@ -59,6 +61,7 @@ class _TarjetasAdminState extends State<TarjetasAdmin> {
                     onPressed: () {},
                   ),
                   Spacer(),
+                  //Boton borrar
                   IconButton(
                     icon: Icon(
                       MdiIcons.trashCan,
@@ -66,8 +69,21 @@ class _TarjetasAdminState extends State<TarjetasAdmin> {
                       color: Color(0xFFcb769b),
                     ),
                     onPressed: () {
-                      print('apretao');
-                      FirestoreServices().eventoBorrar(widget.evento.id);
+                      confiDialog(widget.evento).then((confiBorrado) {
+                        if (confiBorrado != null && confiBorrado) {
+                          setState(() {
+                            FirestoreServices()
+                                .eventoBorrar(widget.evento.id)
+                                .then((exito) {
+                              if (exito = true) {
+                                print('borrado');
+                              } else {
+                                //
+                              }
+                            });
+                          });
+                        }
+                      });
                     },
                   ),
                 ],
@@ -76,6 +92,30 @@ class _TarjetasAdminState extends State<TarjetasAdmin> {
           ),
         ),
       ),
+    );
+  }
+
+  //dialogo de confirmar borrado
+  Future<bool?> confiDialog(QueryDocumentSnapshot evento) {
+    return showDialog<bool?>(
+      context: scaffoldKey.currentContext!,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Confirmar Borrado'),
+          content: Text(
+              '¿Está seguro de que quiere borrar el evento ${evento['titulo']}?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text('Borrar'),
+            )
+          ],
+        );
+      },
     );
   }
 }
