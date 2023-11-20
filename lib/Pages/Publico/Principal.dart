@@ -4,8 +4,21 @@ import 'package:gestion_eventos/Services/firestore-services.dart';
 import 'package:gestion_eventos/Widgets/TarjetasEvento.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class Principal extends StatelessWidget {
-  const Principal({Key? key});
+class Principal extends StatefulWidget {
+  const Principal({Key? key}) : super(key: key);
+
+  @override
+  _PrincipalState createState() => _PrincipalState();
+}
+
+class _PrincipalState extends State<Principal> {
+  String estadoFiltro = "D";
+//filtro
+  void cambiarEstadoFiltro() {
+    setState(() {
+      estadoFiltro = (estadoFiltro == "D") ? "F" : "D";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,41 +28,71 @@ class Principal extends StatelessWidget {
         title: Text(
           'Gestion eventos Symphony',
           style: TextStyle(
-            color: const Color.fromARGB(
-              255,
-              240,
-              237,
-              237,
-            ),
+            color: Color(0xFFaca6a2),
           ),
         ),
       ),
-      body: StreamBuilder(
-        stream: FirestoreServices().eventos(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Esperando datos
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            // errores
-            return Center(child: Text('Error al cargar datos'));
-          } else {
-            // listar
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              width: 200,
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.all(8.0),
+              //boton filtro
+              child: DropdownButton<String>(
+                value: estadoFiltro,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    estadoFiltro = newValue!;
+                  });
+                },
 
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5.0,
-                  mainAxisSpacing: 5.0),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (BuildContext context, int index) {
-                //se llama el widget de tarjetas
-                var evento = snapshot.data!.docs[index];
-                return TarjetaEvento(evento: evento);
+                //botones filtro
+                items: <String>['D', 'F']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          Expanded(
+            child: StreamBuilder(
+              stream: FirestoreServices().eventos(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error al cargar datos'));
+                } else {
+                  List<DocumentSnapshot> eventos = snapshot.data!.docs;
+                  // Filtrar la lista según el estado seleccionado
+                  List<DocumentSnapshot> eventosFiltrados = eventos
+                      .where((evento) => evento['estado'] == estadoFiltro)
+                      .toList();
+
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 5.0,
+                      mainAxisSpacing: 5.0,
+                    ),
+                    itemCount: eventosFiltrados.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var evento = eventosFiltrados[index];
+                      return TarjetaEvento(evento: evento);
+                    },
+                  );
+                }
               },
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
     );
   }

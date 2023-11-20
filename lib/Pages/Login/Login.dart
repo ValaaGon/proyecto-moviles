@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_eventos/Pages/Admin/administracion.dart';
-import 'package:gestion_eventos/Pages/Login/InicioSesion.dart';
 import 'package:gestion_eventos/Pages/Publico/Principal.dart';
 
 class Login extends StatelessWidget {
@@ -54,6 +52,7 @@ class Login extends StatelessWidget {
                     //boton google
                     child: ElevatedButton(
                       onPressed: () async {
+                        /*
                         await inicioSesion();
                         if (FirebaseAuth.instance.currentUser != null) {
                           Navigator.pushAndRemoveUntil(
@@ -61,7 +60,14 @@ class Login extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => Administracion()),
                               (Route<dynamic> route) => false);
+                              
                         }
+                        */
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Administracion()),
+                        );
                       },
                       child: Text(
                         'Iniciar sesión',
