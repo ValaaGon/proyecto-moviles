@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_eventos/Services/firestore-services.dart';
+import 'package:gestion_eventos/Widgets/EditarAdmin.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -58,7 +59,13 @@ class _TarjetasAdminState extends State<TarjetasAdmin> {
                       size: 50,
                       color: Color(0xFF49c2ee),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return EditarAdmin(evento: widget.evento);
+                          });
+                    },
                   ),
                   Spacer(),
                   //Boton borrar
@@ -98,6 +105,7 @@ class _TarjetasAdminState extends State<TarjetasAdmin> {
   //dialogo de confirmar borrado
   Future<bool?> confiDialog(QueryDocumentSnapshot evento) {
     return showDialog<bool?>(
+      barrierDismissible: false,
       context: scaffoldKey.currentContext!,
       builder: (context) {
         return AlertDialog(

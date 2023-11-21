@@ -30,4 +30,6 @@ class FirestoreServices {
         .where('estado', isEqualTo: estado)
         .snapshots();
   }
+
+  //editar
 }

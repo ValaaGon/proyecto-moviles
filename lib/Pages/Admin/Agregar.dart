@@ -141,7 +141,7 @@ class _AgregarState extends State<Agregar> {
                               ),
                       ),
                     ),
-
+                    Spacer(),
                     Container(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -189,7 +189,6 @@ class _AgregarState extends State<Agregar> {
                 ),
               ),
             ),
-            //boton subir
           ],
         ),
       ),

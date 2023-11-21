@@ -45,6 +45,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_datetime_picker: ^1.5.1
+  sign_in_button: ^3.0.0
 
 dev_dependencies:
   flutter_test:
