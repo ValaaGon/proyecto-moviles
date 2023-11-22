@@ -45,7 +45,11 @@ class _TarjetasAdminState extends State<TarjetasAdmin> {
               // Imagen
               AspectRatio(
                 aspectRatio: 15 / 5,
-                //AQUI PONER
+                /*
+                child: Image.network(
+                  widget.evento['foto'],
+                  fit: BoxFit.cover,
+                ),*/
               ),
               // Boton editar
               Row(

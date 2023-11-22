@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gestion_eventos/Pages/Admin/administracion.dart';
+import 'package:gestion_eventos/Pages/Admin/Administracion.dart';
 import 'package:gestion_eventos/Pages/Publico/Principal.dart';
+import 'package:gestion_eventos/Services/google-sign.in.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -50,30 +53,19 @@ class Login extends StatelessWidget {
                     height: 80.0,
                     padding: EdgeInsets.all(12.0),
                     //boton google
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        /*
-                        await inicioSesion();
-                        if (FirebaseAuth.instance.currentUser != null) {
-                          Navigator.pushAndRemoveUntil(
+                    child: SizedBox(
+                      height: 50,
+                      child: SignInButton(
+                        Buttons.google,
+                        text: 'Iniciar con Google',
+                        onPressed: () async {
+                          await iniciarSesionConGoogle();
+                          print(FirebaseAuth.instance.currentUser?.email);
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Administracion()),
-                              (Route<dynamic> route) => false);
-                              
-                        }
-                        */
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Administracion()),
-                        );
-                      },
-                      child: Text(
-                        'Iniciar sesión',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                                  builder: (context) => Administracion()));
+                        },
                       ),
                     ),
                   ),

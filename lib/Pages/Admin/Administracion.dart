@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_eventos/Pages/Admin/AgregarEvento.dart';
+import 'package:gestion_eventos/Pages/Login/Login.dart';
+import 'package:gestion_eventos/Services/auth-services.dart';
 import 'package:gestion_eventos/Services/firestore-services.dart';
 import 'package:gestion_eventos/Widgets/TarjetasAdmin.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -14,7 +17,7 @@ class Administracion extends StatefulWidget {
 
 class _AdministracionState extends State<Administracion> {
   final ScrollController _scrollController = ScrollController();
-  bool _showDebugBanner = true;
+  bool _showDebugBanner = false;
 
   @override
   void initState() {
@@ -85,21 +88,30 @@ class _AdministracionState extends State<Administracion> {
             child: Row(
               children: [
                 Container(
-                  width: 150.0,
-                  height: 150.0,
+                  width: 90.0,
+                  height: 90.0,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100.0),
+                    borderRadius: BorderRadius.circular(0.0),
                     border: Border.all(
                       color: Color(0xFF40215e),
                       width: 8.0,
                     ),
                   ),
-                  child: Image.asset(
-                    'assets/images/user.png',
-                    width: 150.0,
-                    height: 150.0,
-                    fit: BoxFit.cover,
-                  ),
+                  child: StreamBuilder(
+                      stream: AuthService().usuario,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (FirebaseAuth.instance.currentUser?.photoURL !=
+                            null) {
+                          return Image(
+                            image: NetworkImage(
+                              FirebaseAuth.instance.currentUser!.photoURL
+                                  .toString(),
+                            ),
+                          );
+                        } else {
+                          return Text('');
+                        }
+                      }),
                 ),
                 SizedBox(width: 16.0),
                 Column(
@@ -113,13 +125,56 @@ class _AdministracionState extends State<Administracion> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      'Administrador',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
-                    ),
+                    StreamBuilder(
+                        stream: AuthService().usuario,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (FirebaseAuth.instance.currentUser?.email ==
+                              null) {
+                            return Text('');
+                          } else {
+                            return Text(
+                                FirebaseAuth.instance.currentUser!.email
+                                    .toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17.0,
+                                ));
+                          }
+                        }),
+                    StreamBuilder(
+                        stream: AuthService().usuario,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (FirebaseAuth.instance.currentUser?.email ==
+                              null) {
+                            return Container();
+                          } else {
+                            return InkWell(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Cerrar Sesion ',
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.white)),
+                                  Icon(
+                                    MdiIcons.logout,
+                                    size: 25,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                FirebaseAuth.instance.signOut();
+                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Login()));
+                              },
+                            );
+                          }
+                        }),
                   ],
                 ),
               ],
@@ -127,12 +182,6 @@ class _AdministracionState extends State<Administracion> {
           ),
         ],
       ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(MdiIcons.dotsVertical),
-        ),
-      ],
     );
   }
 

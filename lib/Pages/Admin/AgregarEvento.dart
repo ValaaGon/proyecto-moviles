@@ -214,14 +214,15 @@ class _AgregarEventoState extends State<AgregarEvento> {
                           print('Imagen subida con éxito: $uploaded');
                           //actualizacion de bd
                           FirestoreServices().eventoAgregar(
-                              detallesCtrl.text.trim(),
-                              estado,
-                              like,
-                              fecha_desarrollo,
-                              tituloCtrl.text.trim(),
-                              tipo,
-                              lugarCtrl.text.trim(),
-                              imagen_subir.toString());
+                            detallesCtrl.text.trim(),
+                            estado,
+                            like,
+                            fecha_desarrollo,
+                            tituloCtrl.text.trim(),
+                            tipo,
+                            lugarCtrl.text.trim(),
+                            uploaded.toString(),
+                          );
                           setState(() {
                             Navigator.pop(context);
                           });
