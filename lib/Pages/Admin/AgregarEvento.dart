@@ -19,9 +19,12 @@ class _AgregarEventoState extends State<AgregarEvento> {
   TextEditingController tituloCtrl = TextEditingController();
   TextEditingController lugarCtrl = TextEditingController();
   TextEditingController detallesCtrl = TextEditingController();
-  //formatos fecha
+  //formatos fecha y hora
   DateTime fecha_desarrollo = DateTime.now();
+  TimeOfDay hora_desarrollo = TimeOfDay.now();
+  DateTime detallesFecha = DateTime.now();
   final formatoFecha = DateFormat('dd-MM-yyyy');
+  DateFormat formatoHora = DateFormat('HH:mm');
 //campos por default
   String estado = "D";
   String tipo = "";
@@ -95,11 +98,12 @@ class _AgregarEventoState extends State<AgregarEvento> {
                     children: [
                       Row(
                         children: [
-                          Text('Fecha de evento: '),
+                          Text('Fecha y hora evento: '),
                           Spacer(),
                           IconButton(
                             icon: Icon(MdiIcons.calendar),
                             onPressed: () {
+                              //calendario
                               showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
@@ -113,14 +117,47 @@ class _AgregarEventoState extends State<AgregarEvento> {
                               });
                             },
                           ),
+                          IconButton(
+                              onPressed: () {
+                                //reloj
+                                showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                    builder: (context, child) {
+                                      return Theme(
+                                          data: ThemeData.dark(),
+                                          child: child!);
+                                    }).then((hora) {
+                                  setState(() {
+                                    if (hora != null) {
+                                      hora_desarrollo = hora;
+
+                                      fecha_desarrollo = DateTime(
+                                        fecha_desarrollo.year,
+                                        fecha_desarrollo.month,
+                                        fecha_desarrollo.day,
+                                        hora_desarrollo.hour,
+                                        hora_desarrollo.minute,
+                                      );
+                                    }
+                                  });
+                                });
+                              },
+                              icon: Icon(MdiIcons.clock))
                         ],
                       ),
-                      Text(
-                        formatoFecha.format(fecha_desarrollo),
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      //mostrar fecha y hora seleccionada
+                      Row(
+                        children: [
+                          Text(
+                            DateFormat('dd-MM-yyyy     HH:mm')
+                                .format(fecha_desarrollo),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -221,7 +258,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
                             tituloCtrl.text.trim(),
                             tipo,
                             lugarCtrl.text.trim(),
-                            uploaded.toString(),
+                            imagen_subir.toString(),
                           );
                           setState(() {
                             Navigator.pop(context);

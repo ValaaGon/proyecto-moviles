@@ -52,6 +52,7 @@ class _AdministracionState extends State<Administracion> {
           ),
           onPressed: () {
             showDialog(
+                barrierDismissible: false,
                 context: context,
                 builder: (context) {
                   return AgregarEvento();
