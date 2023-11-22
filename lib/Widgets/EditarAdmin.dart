@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gestion_eventos/Services/firestore-services.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -17,7 +18,7 @@ class _EditarAdminState extends State<EditarAdmin> {
   String estado = "D";
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
+    return Builder(builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
           'Informacion del evento',
@@ -47,26 +48,59 @@ class _EditarAdminState extends State<EditarAdmin> {
               ),
               Text(widget.evento['detalles']),
               //FECHA
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Fecha',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
               Row(
                 children: [
                   Text(
-                    'Fecha',
+                    "${formatoFecha.format(widget.evento['fecha'].toDate())} | ${formatoHora.format(widget.evento['fecha'].toDate())} hrs",
+                  ),
+                ],
+              ),
+              Spacer(),
+              Row(
+                children: [
+                  Text(
+                    'Lugar',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               Row(
                 children: [
+                  Text(widget.evento['lugar']),
+                ],
+              ),
+              Spacer(),
+              Row(
+                children: [
                   Text(
-                    "${formatoFecha.format(widget.evento['fecha'].toDate())} | ${formatoHora.format(widget.evento['fecha'].toDate())}",
+                    'Tipo',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Text(widget.evento['tipo']),
+                ],
+              ),
+              Spacer(),
               //LIKES
               Row(
                 children: [
                   Text(
-                    'Like',
+                    'Likes',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -80,13 +114,15 @@ class _EditarAdminState extends State<EditarAdmin> {
                   Text(widget.evento['like'].toString()),
                 ],
               ),
+              Spacer(),
               //ESTADO
               Container(
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        Text('Estado',
+                        Text(
+                            'Estado (${estado == 'D' ? 'Disponible' : 'Finalizado'})',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold)),
                       ],
@@ -116,11 +152,15 @@ class _EditarAdminState extends State<EditarAdmin> {
               Spacer(),
               Container(
                 child: ElevatedButton(
-                  onPressed: () {
-                    final eventoRef = FirebaseFirestore.instance
-                        .collection('Eventos')
-                        .doc(widget.evento.id);
-                    eventoRef.update({'estado': estado});
+                  onPressed: () async {
+                    await FirestoreServices().actualizarEvento(
+                        widget.evento.id,
+                        estado,
+                        widget.evento['detalles'],
+                        widget.evento['fecha'].toDate(),
+                        widget.evento['like'],
+                        widget.evento['titulo']);
+                    Navigator.pop(context);
                   },
                   child: Text('Actualizar'),
                 ),

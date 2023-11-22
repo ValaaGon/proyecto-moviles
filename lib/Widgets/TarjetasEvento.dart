@@ -77,7 +77,9 @@ class _TarjetaEventoState extends State<TarjetaEvento> {
                       children: [
                         Icon(
                           leGusta ? MdiIcons.heart : MdiIcons.heartOutline,
-                          color: leGusta ? Color(0xFFcb769b) : null,
+                          color: leGusta
+                              ? Color.fromARGB(255, 190, 71, 123)
+                              : null,
                         ),
                         Text(widget.evento['like'] != null
                             ? widget.evento['like'].toString()
@@ -86,7 +88,7 @@ class _TarjetaEventoState extends State<TarjetaEvento> {
                     ),
                   ),
                 ),
-                //nombre
+                //marca
                 title: Row(
                   children: [
                     Expanded(
@@ -147,7 +149,7 @@ class _TarjetaEventoState extends State<TarjetaEvento> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        //titulo
+                        //Titulo Detallas
                         children: [
                           Icon(
                             MdiIcons.information,
@@ -172,18 +174,14 @@ class _TarjetaEventoState extends State<TarjetaEvento> {
                         ),
                       ),
                       Row(
-                        //titulo
+                        //Titulo tipo
                         children: [
                           Icon(
-                            evento['estado'] == 'D'
-                                ? Icons.check_circle_rounded
-                                : Icons.cancel,
-                            color: evento['estado'] == 'F'
-                                ? Colors.red
-                                : Colors.green,
+                            MdiIcons.bullhorn,
+                            color: Color(0xFFaca6a2),
                           ),
                           Text(
-                            ' Estado',
+                            ' Tipo',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
@@ -191,19 +189,17 @@ class _TarjetaEventoState extends State<TarjetaEvento> {
                           ),
                         ],
                       ),
-                      //detalles
+                      //detalles tipo
                       Container(
                         margin: EdgeInsets.only(left: 30.0),
                         child: Text(
-                          evento['estado'] == 'F'
-                              ? '- Finalizado'
-                              : '- Proximo',
+                          evento['tipo'],
                           style:
                               TextStyle(fontSize: 16, color: Color(0xFFaca6a2)),
                         ),
                       ),
                       Row(
-                        //titulo
+                        //Titulo fecha
                         children: [
                           Icon(
                             MdiIcons.calendar,
@@ -218,21 +214,37 @@ class _TarjetaEventoState extends State<TarjetaEvento> {
                           ),
                         ],
                       ),
-                      //detalles
+                      //detalles fecha
                       Container(
                         margin: EdgeInsets.only(left: 30.0),
                         child: Column(
                           children: [
                             Text(
-                              formatoFecha.format(evento['fecha'].toDate()),
+                              "${formatoFecha.format(widget.evento['fecha'].toDate())} | ${formatoHora.format(widget.evento['fecha'].toDate())} hrs",
                               style: TextStyle(color: Color(0xFFaca6a2)),
                             ),
-                            Text(
-                              'hrs${formatoHora.format(evento['fecha'].toDate())}',
-                              style: TextStyle(color: Color(0xFFaca6a2)),
-                            )
                           ],
                         ),
+                      ),
+                      Row(
+                        //Lugar
+                        children: [
+                          Icon(
+                            MdiIcons.mapMarker,
+                            color: Color(0xFFaca6a2),
+                          ),
+                          Text(
+                            ' Lugar : ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Color(0xFFaca6a2)),
+                          ),
+                          Text(
+                            widget.evento['lugar'],
+                            style: TextStyle(color: Color(0xFFaca6a2)),
+                          )
+                        ],
                       ),
                     ],
                   ),

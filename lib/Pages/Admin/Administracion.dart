@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gestion_eventos/Pages/Admin/Agregar.dart';
+import 'package:gestion_eventos/Pages/Admin/AgregarEvento.dart';
 import 'package:gestion_eventos/Services/firestore-services.dart';
 import 'package:gestion_eventos/Widgets/TarjetasAdmin.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -48,16 +48,18 @@ class _AdministracionState extends State<Administracion> {
             color: Color(0xFF40215e),
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Agregar()),
-            );
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AgregarEvento();
+                });
           },
         ),
       ),
     );
   }
 
+  //apbar
   SliverAppBar buildSliverAppBar() {
     return SliverAppBar(
       expandedHeight: 200.0,
@@ -134,6 +136,7 @@ class _AdministracionState extends State<Administracion> {
     );
   }
 
+//contenido
   SliverToBoxAdapter buildSliverToBoxAdapter() {
     return SliverToBoxAdapter(
       child: Container(
