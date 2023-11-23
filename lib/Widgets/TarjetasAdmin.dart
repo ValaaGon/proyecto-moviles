@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_eventos/Services/firestore-services.dart';
@@ -43,14 +45,13 @@ class _TarjetasAdminState extends State<TarjetasAdmin> {
                 ),
               ),
               // Imagen
+              /*
               AspectRatio(
                 aspectRatio: 15 / 5,
-                /*
-                child: Image.network(
-                  widget.evento['foto'],
-                  fit: BoxFit.cover,
-                ),*/
-              ),
+                
+               AQUI IMAGEN
+              ),*/
+
               // Boton editar
               Row(
                 children: [

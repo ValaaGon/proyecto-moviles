@@ -34,7 +34,7 @@ class _AdministracionState extends State<Administracion> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: _showDebugBanner,
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: CustomScrollView(
           controller: _scrollController,

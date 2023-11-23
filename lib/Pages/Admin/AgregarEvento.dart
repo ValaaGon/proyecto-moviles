@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class AgregarEvento extends StatefulWidget {
-  const AgregarEvento({super.key});
-
   @override
   State<AgregarEvento> createState() => _AgregarEventoState();
 }
@@ -29,6 +27,7 @@ class _AgregarEventoState extends State<AgregarEvento> {
   String estado = "D";
   String tipo = "";
   int like = 0;
+  String nombreImagen = "";
 
   File? imagen_subir;
   @override
@@ -200,7 +199,10 @@ class _AgregarEventoState extends State<AgregarEvento> {
                         setState(() {
                           imagen_subir = File(imagen!.path);
                         });
-                        print(imagen_subir);
+                        if (imagen_subir != null) {
+                          nombreImagen = imagen_subir!.path.split("/").last;
+                          print("ESTE ES EL NOMBRE " + nombreImagen);
+                        }
                       } catch (e) {
                         print('Error $e');
                       }
@@ -258,10 +260,10 @@ class _AgregarEventoState extends State<AgregarEvento> {
                             tituloCtrl.text.trim(),
                             tipo,
                             lugarCtrl.text.trim(),
-                            imagen_subir.toString(),
+                            nombreImagen,
                           );
                           setState(() {
-                            Navigator.pop(context);
+                            Navigator.pop(context, imagen_subir);
                           });
                         } catch (error) {
                           print('Error al subir la imagen: $error');

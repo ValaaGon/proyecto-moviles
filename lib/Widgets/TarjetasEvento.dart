@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -6,7 +7,10 @@ import 'package:intl/intl.dart';
 class TarjetaEvento extends StatefulWidget {
   final DocumentSnapshot evento;
 
-  TarjetaEvento({required this.evento});
+  TarjetaEvento({
+    required this.evento,
+  });
+
   @override
   State<TarjetaEvento> createState() => _TarjetaEventoState();
 }
@@ -52,61 +56,61 @@ class _TarjetaEventoState extends State<TarjetaEvento> {
           onTap: () {
             mostrarInfo(context, widget.evento);
           },
-          child: Column(
-            //imagen
-            children: [
-              AspectRatio(
-                aspectRatio: 15 / 9,
-                child: Image.asset(
-                  'assets/images/imagen.jpeg',
-                  fit: BoxFit.cover,
-                ),
-              ),
-              //Likes
-              ListTile(
-                leading: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: GestureDetector(
-                    onDoubleTap: () {
-                      setState(() {
-                        leGusta = !leGusta;
-                      });
-                      actualizarLikes(widget.evento.id, leGusta);
-                    },
-                    child: Column(
-                      children: [
-                        Icon(
-                          leGusta ? MdiIcons.heart : MdiIcons.heartOutline,
-                          color: leGusta
-                              ? Color.fromARGB(255, 190, 71, 123)
-                              : null,
-                        ),
-                        Text(widget.evento['like'] != null
-                            ? widget.evento['like'].toString()
-                            : ''),
-                      ],
+          //imagen
+          child: Container(
+            height: 200,
+            child: Column(
+              children: [
+                /*
+                ClipRect(
+                 //AQUI IMAGEN
+                ),*/
+                // Likes
+                ListTile(
+                  leading: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: GestureDetector(
+                      onDoubleTap: () {
+                        setState(() {
+                          leGusta = !leGusta;
+                        });
+                        actualizarLikes(widget.evento.id, leGusta);
+                      },
+                      child: Column(
+                        children: [
+                          Icon(
+                            leGusta ? MdiIcons.heart : MdiIcons.heartOutline,
+                            color: leGusta
+                                ? Color.fromARGB(255, 190, 71, 123)
+                                : null,
+                          ),
+                          Text(widget.evento['like'] != null
+                              ? widget.evento['like'].toString()
+                              : ''),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                //marca
-                title: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.evento['titulo'],
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
+                  // Marca
+                  title: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.evento['titulo'],
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                    if (muestraEstrella)
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      ),
-                  ],
+                      if (muestraEstrella)
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
