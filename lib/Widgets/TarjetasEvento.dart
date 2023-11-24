@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -61,10 +60,15 @@ class _TarjetaEventoState extends State<TarjetaEvento> {
             height: 200,
             child: Column(
               children: [
-                /*
-                ClipRect(
-                 //AQUI IMAGEN
-                ),*/
+                AspectRatio(
+                  aspectRatio: 8 / 5,
+                  child: Image(
+                    image: NetworkImage(
+                      'https://firebasestorage.googleapis.com/v0/b/proyectoappmov-e5aab.appspot.com/o/imagenesEvento%2F${this.widget.evento['foto']}?alt=media&token=4a5fe4d1-949a-4c54-87a6-d956ebf4ff19',
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 // Likes
                 ListTile(
                   leading: Padding(

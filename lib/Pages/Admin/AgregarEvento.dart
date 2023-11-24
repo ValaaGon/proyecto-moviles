@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gestion_eventos/Services/firestore-services.dart';
 import 'package:gestion_eventos/Services/select_image.dart';
-import 'package:gestion_eventos/Services/upload.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -249,8 +248,6 @@ class _AgregarEventoState extends State<AgregarEvento> {
                         }
 
                         try {
-                          final uploaded = await upload(imagen_subir!);
-                          print('Imagen subida con éxito: $uploaded');
                           //actualizacion de bd
                           FirestoreServices().eventoAgregar(
                             detallesCtrl.text.trim(),
