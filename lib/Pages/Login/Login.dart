@@ -53,19 +53,22 @@ class Login extends StatelessWidget {
                     height: 80.0,
                     padding: EdgeInsets.all(12.0),
                     //boton google
-                    child: SizedBox(
-                      height: 50,
-                      child: SignInButton(
-                        Buttons.google,
-                        text: 'Iniciar con Google',
-                        onPressed: () async {
-                          await iniciarSesionConGoogle();
-                          print(FirebaseAuth.instance.currentUser?.email);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Administracion()));
-                        },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(40.0),
+                      child: SizedBox(
+                        height: 50,
+                        child: SignInButton(
+                          Buttons.google,
+                          text: 'Iniciar con Google',
+                          onPressed: () async {
+                            await iniciarSesionConGoogle();
+                            print(FirebaseAuth.instance.currentUser?.email);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Administracion()));
+                          },
+                        ),
                       ),
                     ),
                   ),
