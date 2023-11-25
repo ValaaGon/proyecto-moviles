@@ -66,8 +66,8 @@ class _AgregarEventoState extends State<AgregarEvento> {
                     if (detalles!.isEmpty) {
                       return 'Ingrese detalles';
                     }
-                    if (detalles.length < 50) {
-                      return 'Este campo debe tener al menos 50 caracteres';
+                    if (detalles.length < 30) {
+                      return 'Este campo debe tener al menos 30 caracteres';
                     }
                     return null;
                   },
@@ -171,19 +171,23 @@ class _AgregarEventoState extends State<AgregarEvento> {
                     } else {
                       var tipos = snapshot.data!.docs;
                       return DropdownButtonFormField<String>(
-                        value: tipo == '' ? tipos[0]['tipo_evento'] : tipo,
-                        decoration: InputDecoration(labelText: 'Tipo evento'),
-                        items: tipos.map<DropdownMenuItem<String>>((tipo) {
-                          return DropdownMenuItem<String>(
-                              child: Text(tipo['tipo_evento']),
-                              value: tipo['tipo_evento']);
-                        }).toList(),
-                        onChanged: (tipoSeleccionado) {
-                          setState(() {
-                            tipo = tipoSeleccionado!;
+                          value: tipo == '' ? tipos[0]['tipo_evento'] : tipo,
+                          decoration: InputDecoration(labelText: 'Tipo evento'),
+                          items: tipos.map<DropdownMenuItem<String>>((tipo) {
+                            return DropdownMenuItem<String>(
+                                child: Text(tipo['tipo_evento']),
+                                value: tipo['tipo_evento']);
+                          }).toList(),
+                          onChanged: (tipoSeleccionado) {
+                            setState(() {
+                              tipo = tipoSeleccionado!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Seleccione un tipo de evento';
+                            }
                           });
-                        },
-                      );
                     }
                   },
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gestion_eventos/Pages/Login/Login.dart';
 import 'package:gestion_eventos/Services/firestore-services.dart';
 import 'package:gestion_eventos/Widgets/TarjetasEvento.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -24,6 +25,14 @@ class _PrincipalState extends State<Principal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(MdiIcons.arrowCollapseLeft, color: Color(0xFFaca6a2)),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Login()));
+          },
+        ),
         backgroundColor: Color(0xFF40215e),
         title: Text(
           'Gestion eventos Symphony',
